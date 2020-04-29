@@ -43,23 +43,25 @@ public class RemoteSubscriber {
                         InputStreamReader inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
                         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                         String line = bufferedReader.readLine();
-                        System.out.println(line);
+                        //System.out.println(line);
                         String type = line.split(" ")[1].substring(1);
                         int len = 0;
                         line = bufferedReader.readLine();
                         while (!line.isEmpty()) {
-                            System.out.println(line);
+           //                 System.out.println(line);
                             if (line.startsWith("Content-Length")) {
                                 String[] tokens = line.split(":");
-                                System.out.println(tokens[0]);
-                                System.out.println(tokens[1]);
-                                System.out.println(len = Integer.parseInt(tokens[1].trim()));
+                               // System.out.println(tokens[0]);
+                                //System.out.println(tokens[1]);
+                                //System.out.println(len = Integer.parseInt(tokens[1].trim()));
+                                len = Integer.parseInt(tokens[1].trim());
                             }
                             line = bufferedReader.readLine();
                         }
                         if (len > 0) {
                             char[] buf = new char[len];
-                            System.out.println(bufferedReader.read(buf, 0, len));
+                            bufferedReader.read(buf, 0, len);
+                            //System.out.println(bufferedReader.read(buf, 0, len));
                             line = String.copyValueOf(buf);
                         }
                         if (type.equals("receive")) {

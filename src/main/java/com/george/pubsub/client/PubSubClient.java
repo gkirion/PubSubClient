@@ -34,7 +34,7 @@ public class PubSubClient {
             Message message = new Message(topic, text);
             HttpResponse response = HttpBuilder.get(remoteBrokerIp, remoteBrokerPort, "publish")
                     .body(mapper.writeValueAsString(message)).send();
-            System.out.println(response);
+            //System.out.println(response);
         } catch (IOException e) {
             System.out.println("could not connect to the broker server...");
             System.out.println("reason: " + e.getMessage());

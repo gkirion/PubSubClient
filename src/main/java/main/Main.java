@@ -1,4 +1,4 @@
-package com.george.pubsub.client.main;
+package main;
 
 import com.george.pubsub.client.PubSubClient;
 import com.george.pubsub.client.RemoteSubscriber;
@@ -15,14 +15,21 @@ public class Main {
         RemoteAddress localAddress = new RemoteAddress("localhost", Integer.parseInt(args[0]));
         RemoteSubscriber subscriber = new RemoteSubscriber(localAddress.getIp(), localAddress.getPort());
         PubSubClient pubSubClient = new PubSubClient("localhost", 15000);
+        final int[] messagesReceived = {0};
         subscriber.addReceiver(new Receivable() {
             @Override
             public void receive(Message message) {
+
                 System.out.println(message);
+                messagesReceived[0]++;
             }
         });
         pubSubClient.subscribe("test", localAddress);
-        pubSubClient.publish("test", "hello george!");
+        for (int i = 0; i < 800; i++) {
+            pubSubClient.publish("test", "hello george!");
+        }
+        System.out.println("messages sent: " + 800);
+        System.out.println("messages received: " + messagesReceived[0]);
     }
 
 }
