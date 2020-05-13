@@ -1,7 +1,6 @@
 package main;
 
 import com.george.pubsub.client.PubSubClient;
-import com.george.pubsub.client.RemoteSubscriber;
 import com.george.pubsub.remote.RemoteAddress;
 import pubsub.broker.Message;
 import pubsub.broker.Receivable;
@@ -13,10 +12,11 @@ public class Main {
     public static void main(String[] args) throws IOException {
         System.out.println(args);
         RemoteAddress localAddress = new RemoteAddress("localhost", Integer.parseInt(args[0]));
-        RemoteSubscriber subscriber = new RemoteSubscriber(localAddress.getIp(), localAddress.getPort());
-        PubSubClient pubSubClient = new PubSubClient("localhost", 15000);
+        PubSubClient pubSubClient = new PubSubClient("localhost", Integer.parseInt(args[0]));
+        pubSubClient.setRemoteBrokerIp("localhost");
+        pubSubClient.setRemoteBrokerPort(15000);
         final int[] messagesReceived = {0};
-        subscriber.addReceiver(new Receivable() {
+        pubSubClient.subscribe("test", new Receivable() {
             @Override
             public void receive(Message message) {
 
@@ -24,7 +24,7 @@ public class Main {
                 messagesReceived[0]++;
             }
         });
-        pubSubClient.subscribe("test", localAddress);
+        ;
         for (int i = 0; i < 800; i++) {
             pubSubClient.publish("test", "hello george!");
         }
